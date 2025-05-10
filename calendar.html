@@ -104,28 +104,25 @@
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </footer>
 
-  <!-- 기존 스크립트 -->
+  <!-- FullCalendar & 앱 로직 스크립트 -->
   <script src="script.js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // 1) 팝업 광고 노출 (10초 후)
+    window.addEventListener("load", () => {
+      // 팝업 광고 노출 10초 후
       setTimeout(() => {
         document.getElementById("ad-popup-overlay").style.display = "flex";
       }, 10000);
-      document.getElementById("ad-popup-close")
-              .addEventListener("click", () => {
+      document.getElementById("ad-popup-close").addEventListener("click", () => {
         document.getElementById("ad-popup-overlay").style.display = "none";
       });
 
-      // 2) URL 파라미터에서 날짜 읽어와 input에 세팅
+      // URL 파라미터에서 날짜 읽기
       const params = new URLSearchParams(location.search);
       const b = params.get("b");
-      if (b) {
-        document.getElementById("newBirthdate").value = b;
-      }
+      if (b) document.getElementById("newBirthdate").value = b;
 
-      // 3) 자동 재계산 트리거: 페이지 로드 시 달력 생성
+      // 자동 재계산 트리거
       const recalcBtn = document.getElementById("recalcBtn");
       if (recalcBtn) recalcBtn.click();
     });
