@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>아기 성장 캘린더 계산기</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<body>
+  <header class="ad-banner">[상단 광고]</header>
+
+  <div class="container home">
+    <h1>아기 성장 캘린더 계산기</h1>
+    <div class="intro">
+      🎯 생년월일을 선택하면<br/>
+      🔹원더윅스·💉예방접종·🚼발달지점 전체 일정을<br/>
+      자동으로 계산해 달력으로 보여줍니다.
+    </div>
+
+    <div class="input-group">
+      <input id="birthdate" placeholder="YYYY-MM-DD" readonly/>
+      <button id="calcBtn">계산하기</button>
+    </div>
+  </div>
+
+  <footer class="ad-banner">[하단 광고]</footer>
+
+  <script>
+    flatpickr("#birthdate", {
+      dateFormat: "Y-m-d",
+      allowInput: false,
+      prevArrow: "◀",
+      nextArrow: "▶"
+    });
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const bd = document.getElementById("birthdate").value;
+      if (!bd) return alert("생년월일을 선택해주세요.");
+      location.href = `calendar.html?b=${bd}`;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+[
+  {
+    "type": "wonder",
+    "stage": 1,
+    "title": "주변 환경 탐색 시기",
+    "week": 5,
+    "durationWeeks": 2,
+    "color": "#A8E6CF",
+    "description": {
+      "status": "아기가 주변의 소리와 빛, 촉감 등을 탐색하기 시작합니다.",
+      "tip": "다양한 촉감과 색감의 장난감을 보여주세요.",
+      "example": "부드러운 공이나 천을 건네 감각 놀이를 해보세요."
+    }
+  },
+  {
+    "type": "wonder",
+    "stage": 2,
+    "title": "반복 패턴 인지 시기",
+    "week": 8,
+    "durationWeeks": 2,
+    "color": "#A8E6CF",
+    "description": {
+      "status": "아기가 손·발 동작을 반복하며 패턴을 인지합니다.",
+      "tip": "손뼉치기 등 단순 반복 놀이를 함께 해보세요.",
+      "example": "엄마와 함께 손뼉을 따라 치는 놀이를 시도해보세요."
+    }
+  },
+  {
+    "type": "wonder",
+    "stage": 3,
+    "title": "인과관계 이해 시기",
+    "week": 12,
+    "durationWeeks": 2,
+    "color": "#A8E6CF",
+    "description": {
+      "status": "아기가 ‘이렇게 하면 저렇게 된다’를 깨닫습니다.",
+      "tip": "버튼형 장난감 등 인과관계 놀이를 보여주세요.",
+      "example": "장난감 버튼을 눌러 소리가 나는 것을 경험하게 해주세요."
+    }
+  },
+  {
+    "type": "wonder",
+    "stage": 4,
+    "title": "상황 예측 시기",
+    "week": 17,
+    "durationWeeks": 3,
+    "color": "#A8E6CF",
+    "description": {
+      "status": "아기가 다음 상황을 예상하고 기다리는 능력을 기릅니다.",
+      "tip": "규칙적인 일과를 유지해 안정감을 주세요.",
+      "example": "동요를 반복 재생해 패턴을 익히게 해보세요."
+    }
+  },
+  {
+    "type": "wonder",
+    "stage": 5,
+    "title": "사회적 상호작용 시기",
+    "week": 26,
+    "durationWeeks": 3,
+    "color": "#A8E6CF",
+    "description": {
+      "status": "아기가 다른 사람의 표정과 목소리에 반응합니다.",
+      "tip": "가족 외 지인과의 상호작용 기회를 만들어주세요.",
+      "example": "영상 통화로 다양한 사람을 만나게 해보세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "B형간염 1차 접종",
+    "month": 0,
+    "color": "#74b9ff",
+    "description": {
+      "status": "출생 직후 B형간염 1차 접종이 필요합니다.",
+      "tip": "출생 병원에서 접종 일정을 확인하세요.",
+      "example": "의료진에게 접종 후 관리법을 문의하세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "B형간염 2차 접종",
+    "month": 1,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 1개월경 B형간염 2차 접종이 필요합니다.",
+      "tip": "미리 소아과에 예약해 두세요.",
+      "example": "접종 전·후 활력을 관찰해 기록하세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "DTaP·IPV·Hib 1차 접종",
+    "month": 2,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 2개월경 기초접종 1차가 필요합니다.",
+      "tip": "해열제·찜질팩을 준비해두세요.",
+      "example": "접종 전·후 체온을 체크해 기록하세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "로타바이러스 1차 접종",
+    "month": 2,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 2개월경 로타바이러스 1차 접종이 필요합니다.",
+      "tip": "예약 후 따뜻한 환경을 유지하세요.",
+      "example": "수유 후 바로 접종을 시도해보세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "폐렴구균 PCV 1차 접종",
+    "month": 2,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 2개월경 폐렴구균 PCV 1차 접종이 필요합니다.",
+      "tip": "필수 접종 스케줄을 확인하세요.",
+      "example": "의사에게 부작용 대처법을 문의하세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "DTaP·IPV·Hib 2차 접종",
+    "month": 4,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 4개월경 기초접종 2차가 필요합니다.",
+      "tip": "이전 접종 기록을 의사와 공유하세요.",
+      "example": "접종 후 30분간 관찰실에 머무르세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "로타바이러스 2차 접종",
+    "month": 4,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 4개월경 로타바이러스 2차 접종이 필요합니다.",
+      "tip": "온도 변화를 주의하세요.",
+      "example": "접종 전·후 부드럽게 안아주세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "폐렴구균 PCV 2차 접종",
+    "month": 4,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 4개월경 폐렴구균 PCV 2차 접종이 필요합니다.",
+      "tip": "2차 접종 예약을 미리 해두세요.",
+      "example": "접종 후 가벼운 마사지로 혈액순환을 도와주세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "B형간염 3차 접종",
+    "month": 6,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 6개월경 B형간염 3차 접종이 필요합니다.",
+      "tip": "백신 보관 상태를 확인하세요.",
+      "example": "접종 기록을 꼼꼼히 남기세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "DTaP·IPV·Hib 3차 접종",
+    "month": 6,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 6개월경 기초접종 3차가 필요합니다.",
+      "tip": "접종 전 컨디션을 확인하세요.",
+      "example": "접종 후 충분히 휴식하게 해주세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "폐렴구균 PCV 3차 접종",
+    "month": 6,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 6개월경 폐렴구균 PCV 3차 접종이 필요합니다.",
+      "tip": "접종 후 30분 관찰을 권장합니다.",
+      "example": "관찰 노트를 작성해두세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "MMR 1차 접종",
+    "month": 12,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 12개월경 MMR 1차 접종이 필요합니다.",
+      "tip": "병원에 미리 문의하세요.",
+      "example": "접종 후 편안히 안아주세요."
+    }
+  },
+  {
+    "type": "vaccination",
+    "title": "수두 1차 접종",
+    "month": 12,
+    "color": "#74b9ff",
+    "description": {
+      "status": "생후 12개월경 수두 1차 접종이 필요합니다.",
+      "tip": "예약을 미리 해두세요.",
+      "example": "부드러운 스킨케어로 피부를 보호하세요."
+    }
+  },
+  {
+    "type": "development",
+    "title": "뒤집기 시도 시기",
+    "week": 16,
+    "color": "#ffeaa7",
+    "description": {
+      "status": "생후 4~6개월경 뒤집기를 시도합니다.",
+      "tip": "매트 위에서 엎드려 놀이를 자주 해주세요.",
+      "example": "장난감을 앞에 두어 고개를 들어보게 유도하세요."
+    }
+  },
+  {
+    "type": "development",
+    "title": "앉기 시도 시기",
+    "week": 24,
+    "color": "#ffeaa7",
+    "description": {
+      "status": "생후 6개월경 스스로 앉기를 시도합니다.",
+      "tip": "부모가 옆에서 지지해주세요.",
+      "example": "쿠션을 주변에 배치해 안전하게 연습시키세요."
+    }
+  },
+  {
+    "type": "development",
+    "title": "기기 시작 시기",
+    "week": 32,
+    "color": "#ffeaa7",
+    "description": {
+      "status": "생후 8~9개월경 기어다니기 시작합니다.",
+      "tip": "안전 공간을 확보해 주세요.",
+      "example": "장애물을 두어 다양한 방향으로 기게 유도하세요."
+    }
+  },
+  {
+    "type": "development",
+    "title": "걸음마 시작 시기",
+    "week": 52,
+    "color": "#ffeaa7",
+    "description": {
+      "status": "생후 12개월경 첫 걸음마를 시작합니다.",
+      "tip": "손을 잡아주며 안정적으로 연습시켜주세요.",
+      "example": "무릎 보호대나 쿠션을 사용해 안전을 확보하세요."
+    }
+  },
+  {
+    "type": "development",
+    "title": "첫 단어 말하기 시기",
+    "month": 12,
+    "color": "#ffeaa7",
+    "description": {
+      "status": "생후 12개월경 첫 단어를 말하기 시작합니다.",
+      "tip": "반복해서 단어를 불러주세요.",
+      "example": "사물을 가리키며 이름을 말해보게 해보세요."
+    }
+  },
+  {
+    "type": "development",
+    "title": "간단한 문장 말하기 시기",
+    "month": 24,
+    "color": "#ffeaa7",
+    "description": {
+      "status": "생후 24개월경 2단어 문장을 말합니다.",
+      "tip": "짧은 질문을 해보세요.",
+      "example": "‘엄마 안아줘’ 같은 간단 문장을 유도하세요."
+    }
+  }
+]

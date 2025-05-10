@@ -1,0 +1,112 @@
+/* 기본 리셋 */
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#f0f9f4 0%,#f9fffc 100%);
+  color:#333;
+}
+/* 광고 영역 */
+.ad-banner {
+  width:100%; text-align:center;
+  background:#e8f7f0; color:#66a68a;
+  padding:12px 0; margin-bottom:16px;
+}
+/* 컨테이너 카드 */
+.container {
+  max-width:600px; margin:0 auto 40px;
+  background:#fff; border-radius:12px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.08);
+  padding:32px;
+}
+h1 {
+  font-size:2rem; font-weight:700;
+  text-align:center; margin-bottom:24px;
+  color:#2e7d5e;
+}
+/* 홈 인트로 */
+.home .intro {
+  background:#e0f4e7; border-left:4px solid #A8E6CF;
+  padding:16px 20px; border-radius:6px;
+  margin-bottom:32px; color:#3a7251;
+  line-height:1.5; font-size:1rem;
+}
+/* 입력 그룹 */
+.input-group {
+  display:flex; gap:8px; justify-content:center;
+  margin-bottom:24px;
+}
+.input-group input {
+  flex:1; padding:10px;
+  border:1px solid #ccc; border-radius:6px;
+  cursor:pointer;
+}
+/* 버튼 스타일 */
+#calcBtn, #recalcBtn {
+  background:#56C596 !important; /* 재계산·계산하기 */
+  color:#fff !important;
+  border:none !important; border-radius:6px !important;
+  padding:10px 16px !important; font-size:1rem !important;
+}
+#calcBtn:hover, #recalcBtn:hover {
+  background:#42a374 !important;
+}
+.home-btn {
+  background:#aaa; color:#fff;
+  border:none; border-radius:6px;
+  padding:10px 16px; font-size:1rem;
+}
+.home-btn:hover { background:#888; }
+
+/* 결과 텍스트 */
+#ageInfo { text-align:center; font-weight:bold; margin-bottom:8px; }
+.status { text-align:center; color:#2e7d5e; margin:8px 0; }
+.tip { text-align:center; color:#3a7251; margin-bottom:24px; }
+.next-event {
+  text-align:center; font-weight:bold; color:#4b8f74;
+  margin-top:16px;
+}
+
+/* 달력 그리드 */
+#calendars {
+  display:grid; grid-template-columns:1fr; gap:24px;
+}
+.month-calendar {
+  background:#fff; border-radius:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  padding:16px 8px;
+}
+.fc .fc-daygrid-day-frame { border:none; }
+.fc .fc-daygrid-day-number { font-weight:500; color:#777; }
+.fc .fc-toolbar-title { font-size:1.25rem; color:#2e7d5e; }
+/* 오늘 강조 */
+.fc .fc-daygrid-day.fc-day-today { background:#e0f4e7; }
+
+/* 이벤트 아이콘 & 컬러 */
+.fc-event {
+  border:none; border-radius:4px; padding:2px;
+}
+.fc-event-main-frame { justify-content:center; }
+.fc-event-icon { display:flex; justify-content:center; align-items:center; font-size:1.2em; }
+.fc-event[data-event-color] {
+  background-color: attr(data-event-color color);
+}
+
+/* 팝업 모달 */
+.modal {
+  display:none; position:fixed; top:0; left:0;
+  width:100%; height:100%; background:rgba(0,0,0,0.5);
+  z-index:1000;
+}
+.modal-content {
+  background:#fff; margin:10% auto; padding:24px;
+  border-radius:8px; max-width:400px; position:relative;
+}
+.close {
+  position:absolute; top:12px; right:16px;
+  font-size:24px; cursor:pointer; color:#666;
+}
+.modal-content h2 {
+  font-weight:bold; color:#2e7d5e;
+  margin-bottom:12px; font-size:1.2rem;
+}
+.modal-content p { margin-bottom:10px; }
