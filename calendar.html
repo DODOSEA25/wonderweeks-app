@@ -59,21 +59,22 @@
          data-ad-slot="1171436236"
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </header>
 
   <div class="container result">
     <h1>아기 성장 캘린더</h1>
+
     <div class="input-group recalculator">
       <input id="newBirthdate" placeholder="YYYY-MM-DD" readonly/>
       <button id="recalcBtn">🔄 재계산</button>
       <button id="homeBtn" class="home-btn">🏠 홈으로</button>
     </div>
+
     <p id="ageInfo"></p>
     <p id="statusInfo" class="status"></p>
     <p id="tipInfo" class="tip"></p>
+
     <div id="calendars"></div>
     <p id="nextEvent" class="next-event"></p>
   </div>
@@ -88,9 +89,7 @@
            data-ad-slot="5775002015"
            data-ad-format="auto"
            data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
 
@@ -102,23 +101,33 @@
          data-ad-slot="7893898897"
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </footer>
 
+  <!-- 기존 스크립트 -->
   <script src="script.js"></script>
+
   <script>
-    // 팝업 광고 표시 (페이지 로드 10초 후)
     document.addEventListener("DOMContentLoaded", () => {
+      // 1) 팝업 광고 노출 (10초 후)
       setTimeout(() => {
         document.getElementById("ad-popup-overlay").style.display = "flex";
       }, 10000);
-
       document.getElementById("ad-popup-close")
               .addEventListener("click", () => {
         document.getElementById("ad-popup-overlay").style.display = "none";
       });
+
+      // 2) URL 파라미터에서 날짜 읽어와 input에 세팅
+      const params = new URLSearchParams(location.search);
+      const b = params.get("b");
+      if (b) {
+        document.getElementById("newBirthdate").value = b;
+      }
+
+      // 3) 자동 재계산 트리거: 페이지 로드 시 달력 생성
+      const recalcBtn = document.getElementById("recalcBtn");
+      if (recalcBtn) recalcBtn.click();
     });
   </script>
 </body>
