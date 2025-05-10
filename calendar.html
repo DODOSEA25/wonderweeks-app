@@ -79,6 +79,17 @@
     <p id="nextEvent" class="next-event"></p>
   </div>
 
+  <!-- 이벤트 상세 팝업 모달 -->
+  <div id="eventModal" class="modal">
+    <div class="modal-content">
+      <span id="closeEventModal" class="close">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <p id="modalStatus"></p>
+      <p id="modalTip"></p>
+      <p id="modalExample"></p>
+    </div>
+  </div>
+
   <!-- 팝업 광고 오버레이 -->
   <div id="ad-popup-overlay">
     <div id="ad-popup">
@@ -125,6 +136,11 @@
       // 자동 재계산 트리거
       const recalcBtn = document.getElementById("recalcBtn");
       if (recalcBtn) recalcBtn.click();
+    });
+
+    // 이벤트 클릭 시 상세 모달 띄우기 (script.js 내 renderCalendar가 이벤트 리스너 설정)
+    document.getElementById("closeEventModal").addEventListener("click", () => {
+      document.getElementById("eventModal").style.display = "none";
     });
   </script>
 </body>
