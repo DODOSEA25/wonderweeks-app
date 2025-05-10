@@ -90,15 +90,15 @@ document.addEventListener("DOMContentLoaded", () => {
           const ev = todayEv.extendedProps;
           let prefix, status, tip;
           if (ev.type === "wonder") {
-            prefix = `🔹 원더윅스 ${ev.stage}단계`;
+            prefix = `원더윅스 ${ev.stage}단계`;
             status = ev.description.status;
             tip    = ev.description.tip;
           } else if (ev.type === "development") {
-            prefix = `🚼 발달지점`;
+            prefix = `발달지점`;
             status = ev.description.status;
             tip    = ev.description.tip;
           } else {
-            prefix = `💉 접종 (${ev.list.length}건)`;
+            prefix = `예방접종 (${ev.list.length}차)`;
             status = "여러 접종 일정이 있습니다.";
             tip    = "팝업에서 세부 접종 항목을 확인하세요.";
           }
@@ -130,46 +130,52 @@ document.addEventListener("DOMContentLoaded", () => {
             events: allEvents,
             eventContent: info => {
               const e = info.event.extendedProps;
-              const icons = {
-                wonder: "🔹",
-                development: "🚼",
-                vaccinationGroup: "💉"
-              };
-              return { html: `<div class="fc-event-icon">${icons[e.type]}</div>` };
+              // 레이블 생성
+              let label = "";
+              if (e.type === "wonder") {
+                label = `원더윅스 ${e.stage}단계`;
+              } else if (e.type === "development") {
+                label = `발달지점`;
+              } else if (e.type === "vaccinationGroup") {
+                label = `예방접종 (${e.list.length}차)`;
+              }
+              return { html: `<div class="fc-event-label">${label}</div>` };
             },
             eventClick: info => {
               const e = info.event.extendedProps;
-              let title, status, tip, example="";
+              let title, status, tip = "", example = "";
               if (e.type === "vaccinationGroup") {
-                title   = `💉 ${e.list.length}건의 접종`;
-                status  = e.list.map(x=>x.title).join("\n");
+                title  = `💉 ${e.list.length}건의 예방접종`;
+                status = e.list.map(x => x.title).join("\n");
               } else {
                 title   = info.event.title;
                 status  = e.description.status;
                 tip     = e.description.tip;
                 example = e.description.example;
               }
-              document.getElementById("modalTitle").textContent    = title;
-              document.getElementById("modalStatus").textContent   = status;
-              document.getElementById("modalTip").textContent      = tip;
-              document.getElementById("modalExample").textContent  = example;
-              document.getElementById("eventModal").style.display  = "block";
+              document.getElementById("modalTitle").textContent   = title;
+              document.getElementById("modalStatus").textContent  = status;
+              document.getElementById("modalTip").textContent     = tip;
+              document.getElementById("modalExample").textContent = example;
+              document.getElementById("eventModal").style.display = "block";
             }
           }).render();
         }
 
-        // 7) nextEvent(업데이트된 마지막 원더윅스 종료일)
+        // 7) nextEvent(마지막 원더윅스 종료일 포함)
         const upcoming = allEvents
-          .filter(e=>new Date(e.start)>today)
-          .sort((a,b)=>new Date(a.start)-new Date(b.start));
+          .filter(e => new Date(e.start) > today)
+          .sort((a,b) => new Date(a.start) - new Date(b.start));
+
         const wonderEnds = allEvents
-          .filter(e=>e.extendedProps.type==="wonder")
-          .map(e=>({
-            ev:e,
+          .filter(e => e.extendedProps.type === "wonder")
+          .map(e => ({
+            ev: e,
             endDate: e.end ? new Date(e.end) : new Date(e.start)
           }));
-        const lastWonder = wonderEnds.reduce((acc,cur)=>
-          cur.endDate>acc.endDate?cur:acc
+
+        const lastWonder = wonderEnds.reduce((acc,cur) =>
+          cur.endDate > acc.endDate ? cur : acc
         ,{ ev:null,endDate:new Date(0) });
 
         let summary = "";
@@ -179,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (lastWonder.ev) {
           const stg = lastWonder.ev.extendedProps.stage;
           const ed  = lastWonder.endDate.toISOString().slice(0,10);
-          summary += (summary?" | ":"")+
+          summary += (summary ? " | " : "") +
                      `마지막 ▶ 원더윅스 ${stg}단계 종료 (${ed})`;
         }
         document.getElementById("nextEvent").textContent = summary;
@@ -188,13 +194,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 모달 닫기
   document.getElementById("closeEventModal")
-    .addEventListener("click", ()=> {
+    .addEventListener("click", () => {
       document.getElementById("eventModal").style.display = "none";
     });
   document.getElementById("eventModal")
     .addEventListener("click", e => {
-      if (e.target.id==="eventModal")
-        e.target.style.display="none";
+      if (e.target.id === "eventModal")
+        e.target.style.display = "none";
     });
 
   renderAll();

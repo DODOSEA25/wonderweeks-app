@@ -1,3 +1,4 @@
+/* style.css */
 /* 기본 리셋 */
 * { box-sizing:border-box; margin:0; padding:0; }
 body {
@@ -42,7 +43,7 @@ h1 {
 }
 /* 버튼 스타일 */
 #calcBtn, #recalcBtn {
-  background:#56C596 !important; /* 재계산·계산하기 */
+  background:#56C596 !important;
   color:#fff !important;
   border:none !important; border-radius:6px !important;
   padding:10px 16px !important; font-size:1rem !important;
@@ -59,8 +60,8 @@ h1 {
 
 /* 결과 텍스트 */
 #ageInfo { text-align:center; font-weight:bold; margin-bottom:8px; }
-.status { text-align:center; color:#2e7d5e; margin:8px 0; }
-.tip { text-align:center; color:#3a7251; margin-bottom:24px; }
+#statusInfo { text-align:center; color:#2e7d5e; margin:8px 0; }
+#tipInfo    { text-align:center; color:#3a7251; margin-bottom:24px; }
 .next-event {
   text-align:center; font-weight:bold; color:#4b8f74;
   margin-top:16px;
@@ -81,14 +82,14 @@ h1 {
 /* 오늘 강조 */
 .fc .fc-daygrid-day.fc-day-today { background:#e0f4e7; }
 
-/* 이벤트 아이콘 & 컬러 */
+/* 이벤트 레이블 (아이콘→텍스트) */
 .fc-event {
-  border:none; border-radius:4px; padding:2px;
+  border:none; border-radius:4px; padding:2px 4px;
+  font-size:0.8rem; font-weight:600; text-align:center;
+  white-space:nowrap;
 }
-.fc-event-main-frame { justify-content:center; }
-.fc-event-icon { display:flex; justify-content:center; align-items:center; font-size:1.2em; }
-.fc-event[data-event-color] {
-  background-color: attr(data-event-color color);
+.fc-event-label {
+  width:100%; display:block;
 }
 
 /* 팝업 모달 */
