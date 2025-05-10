@@ -22,8 +22,37 @@
         rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
 
-  <!-- 팝업 광고용 CSS -->
   <style>
+    /* 이벤트 상세 모달 오버레이 */
+    #eventModal {
+      display: none;               /* 숨김 */
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;     /* modal-content 중앙 정렬 */
+      align-items: center;
+      z-index: 1001;               /* 광고 팝업(z=1000) 위 */
+    }
+    /* 모달 컨텐츠 박스 */
+    #eventModal .modal-content {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      max-width: 90%;
+      width: 320px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    /* 닫기 버튼 */
+    #closeEventModal {
+      position: absolute;
+      top: 0.5rem; right: 0.5rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    /* 팝업 광고용 CSS */
     #ad-popup-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -115,33 +144,41 @@
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </footer>
 
-  <!-- FullCalendar & 앱 로직 스크립트 -->
+  <!-- FullCalendar & 앱 로직 -->
   <script src="script.js"></script>
 
   <script>
     window.addEventListener("load", () => {
-      // 팝업 광고 노출 10초 후
+      // 1) 광고 팝업 10초 후 노출
       setTimeout(() => {
         document.getElementById("ad-popup-overlay").style.display = "flex";
       }, 10000);
-      document.getElementById("ad-popup-close").addEventListener("click", () => {
+      document.getElementById("ad-popup-close")
+              .addEventListener("click", () => {
         document.getElementById("ad-popup-overlay").style.display = "none";
       });
 
-      // URL 파라미터에서 날짜 읽기
+      // 2) URL 파라미터로 날짜 입력값 세팅
       const params = new URLSearchParams(location.search);
       const b = params.get("b");
       if (b) document.getElementById("newBirthdate").value = b;
 
-      // 자동 재계산 트리거
+      // 3) 자동 재계산 트리거
       const recalcBtn = document.getElementById("recalcBtn");
       if (recalcBtn) recalcBtn.click();
     });
 
-    // 이벤트 클릭 시 상세 모달 띄우기 (script.js 내 renderCalendar가 이벤트 리스너 설정)
-    document.getElementById("closeEventModal").addEventListener("click", () => {
-      document.getElementById("eventModal").style.display = "none";
-    });
+    // 이벤트 상세 모달 닫기
+    document.getElementById("closeEventModal")
+      .addEventListener("click", () => {
+        document.getElementById("eventModal").style.display = "none";
+      });
+    // 모달 외곽 클릭 시에도 닫기
+    document.getElementById("eventModal")
+      .addEventListener("click", e => {
+        if (e.target.id === "eventModal")
+          e.target.style.display = "none";
+      });
   </script>
 </body>
 </html>

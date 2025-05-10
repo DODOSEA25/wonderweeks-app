@@ -1,4 +1,3 @@
-// script.js
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(location.search);
   let birthStr = params.get("b");
@@ -8,7 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   flatpickr("#newBirthdate", {
     dateFormat: "Y-m-d",
     defaultDate: birthStr,
-    prevArrow: "◀", nextArrow: "▶"
+    prevArrow: "◀", 
+    nextArrow: "▶"
   });
 
   document.getElementById("homeBtn")
@@ -26,8 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderAll() {
     const birthDate = new Date(birthStr);
-
-    // 1) 생후 계산
     const diffDays = Math.floor((today - birthDate) / (1000*60*60*24));
     const months   = Math.floor(diffDays / 30);
     const weeks    = Math.floor((diffDays % 30) / 7);
@@ -39,8 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(events => {
         const wk = 1000*60*60*24*7;
         const mo = 1000*60*60*24*30;
-
-        // 2) 원더윅스·발달 이벤트
         const singleEvents = [];
         events.forEach(ev => {
           if (ev.type === "vaccination") return;
@@ -62,14 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         });
 
-        // 3) 예방접종 그룹화
         const vacMap = {};
-        events.filter(e => e.type === "vaccination").forEach(ev => {
-          const st = new Date(birthDate.getTime() + ev.month * mo);
-          const d  = st.toISOString().slice(0,10);
-          vacMap[d] = vacMap[d] || [];
-          vacMap[d].push(ev);
-        });
+        events.filter(e => e.type === "vaccination")
+          .forEach(ev => {
+            const st = new Date(birthDate.getTime() + ev.month * mo);
+            const d  = st.toISOString().slice(0,10);
+            vacMap[d] = vacMap[d] || [];
+            vacMap[d].push(ev);
+          });
         const vacEvents = Object.entries(vacMap).map(([d,list]) => ({
           title: `${list.length}건의 접종`,
           start: d,
@@ -77,10 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
           extendedProps: { type: "vaccinationGroup", list }
         }));
 
-        // 4) 전체 이벤트
         const allEvents = [...singleEvents, ...vacEvents];
 
-        // 5) 오늘 이벤트 요약
+        // 오늘 이벤트 요약
         const todayEv = allEvents.find(e => {
           const s = new Date(e.start);
           const en= e.end ? new Date(e.end) : s;
@@ -112,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
           document.getElementById("tipInfo").textContent = "";
         }
 
-        // 6) 캘린더 6개월 렌더 (이전1 + 현재 + 다음4)
+        // 달력 6개월 렌더
         const calRoot = document.getElementById("calendars");
         calRoot.innerHTML = "";
         for (let offset = -1; offset <= 4; offset++) {
@@ -130,7 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
             events: allEvents,
             eventContent: info => {
               const e = info.event.extendedProps;
-              // 레이블 생성
               let label = "";
               if (e.type === "wonder") {
                 label = `원더윅스 ${e.stage}단계`;
@@ -157,23 +151,18 @@ document.addEventListener("DOMContentLoaded", () => {
               document.getElementById("modalStatus").textContent  = status;
               document.getElementById("modalTip").textContent     = tip;
               document.getElementById("modalExample").textContent = example;
-              document.getElementById("eventModal").style.display = "block";
+              document.getElementById("eventModal").style.display = "flex";
             }
           }).render();
         }
 
-        // 7) nextEvent(마지막 원더윅스 종료일 포함)
+        // nextEvent
         const upcoming = allEvents
           .filter(e => new Date(e.start) > today)
           .sort((a,b) => new Date(a.start) - new Date(b.start));
-
         const wonderEnds = allEvents
           .filter(e => e.extendedProps.type === "wonder")
-          .map(e => ({
-            ev: e,
-            endDate: e.end ? new Date(e.end) : new Date(e.start)
-          }));
-
+          .map(e => ({ ev: e, endDate: e.end ? new Date(e.end) : new Date(e.start) }));
         const lastWonder = wonderEnds.reduce((acc,cur) =>
           cur.endDate > acc.endDate ? cur : acc
         ,{ ev:null,endDate:new Date(0) });
@@ -192,16 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // 모달 닫기
-  document.getElementById("closeEventModal")
-    .addEventListener("click", () => {
-      document.getElementById("eventModal").style.display = "none";
-    });
-  document.getElementById("eventModal")
-    .addEventListener("click", e => {
-      if (e.target.id === "eventModal")
-        e.target.style.display = "none";
-    });
-
+  // 초기 렌더
   renderAll();
 });
