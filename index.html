@@ -1,54 +1,38 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>아기 성장 캘린더 계산기</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+  <style>
+    body{margin:0;display:flex;justify-content:center;align-items:center;
+         min-height:100vh;background:#f3faf7;font-family:'Pretendard',sans-serif}
+    .box{background:#fff;padding:2rem 2.5rem;border-radius:16px;
+         box-shadow:0 5px 18px rgba(0,0,0,.07);text-align:center}
+    h1{margin-top:0;color:#0f766e}
+    #birthdate{border:1px solid #cbd5e1;border-radius:8px;padding:.6rem .9rem;
+               font-size:1rem;width:180px;margin-right:.5rem}
+    #calcBtn{background:#0f766e;color:#fff;border:none;border-radius:8px;
+             padding:.65rem 1.2rem;font-size:1rem;cursor:pointer}
+    #calcBtn:hover{background:#0d5e59}
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
-  <aside class="sidebar">
-    <h2>메뉴</h2>
-    <a href="#about">원더윅스란?</a>
-    <a href="#guide">사용 방법</a>
-    <a href="#install">앱처럼 설치</a>
-  </aside>
-
-  <main>
-    <section class="calc-box">
-      <h1>아기 성장 캘린더 계산기</h1>
-      <p>생년월일 입력 → 원더윅스·예방접종·발달지점 일정을<br> 달력으로 자동 계산해 드립니다.</p>
-      <input id="birthdate" placeholder="YYYY-MM-DD" readonly />
-      <button id="calcBtn">계산하기</button>
-    </section>
-
-    <section id="about">
-      <h2>원더윅스란?</h2>
-      <p>아기가 급격한 지적‧감각 발달을 겪으며 예민해지는<br> 10 단계(Leap)를 설명하는 이론입니다.</p>
-    </section>
-
-    <section id="guide">
-      <h2>사용 방법</h2>
-      <ol>
-        <li>위에 생년월일 입력 후 <strong>계산하기</strong> 클릭</li>
-        <li>결과 페이지에서 색깔별 달력 확인</li>
-        <li>이벤트를 터치하면 팁 팝업이 열림</li>
-      </ol>
-    </section>
-
-    <section id="install">
-      <h2>앱처럼 설치(PWA)</h2>
-      <p>모바일 크롬 ▶ 공유 ▶ <em>홈 화면에 추가</em> 누르면 아이콘이 생깁니다.</p>
-    </section>
-  </main>
+  <div class="box">
+    <h1>아기 성장 캘린더 계산기</h1>
+    <p>생년월일을 입력하면<br>원더윅스·예방접종·발달지점 전체 일정을<br>달력으로 보여줍니다.</p>
+    <input id="birthdate" placeholder="YYYY-MM-DD" readonly/>
+    <button id="calcBtn">계산하기</button>
+  </div>
 
   <script>
     flatpickr("#birthdate",{dateFormat:"Y-m-d"});
-    document.getElementById("calcBtn").onclick=()=>{
-      const d=document.getElementById("birthdate").value;
-      if(!d)return alert("생년월일을 선택하세요");
+    calcBtn.onclick=()=>{
+      const d=birthdate.value;
+      if(!d) return alert("생년월일을 선택하세요");
       location.href=`calendar.html?b=${d}`;
     };
   </script>
