@@ -1,190 +1,105 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>아기 성장 캘린더 계산기</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-  <style>
-    :root {
-      --sidebar-width: 240px;
-      --primary: #0f766e;
-      --bg: #f8fafc;
-    }
-    body {
-      margin: 0;
-      font-family: "Pretendard", sans-serif;
-      background: var(--bg);
-      display: flex;
-      min-height: 100vh;
-    }
-    /* ==== sidebar === */
-    .sidebar {
-      width: var(--sidebar-width);
-      background: #ffffff;
-      border-right: 1px solid #e5e7eb;
-      padding: 1rem 0;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-    }
-    .sidebar h2 {
-      font-size: 1.1rem;
-      margin: 0 1rem 0.5rem;
-      color: var(--primary);
-    }
-    .nav-section {
-      margin-bottom: 1.5rem;
-    }
-    .nav-link {
-      display: block;
-      padding: 0.5rem 1.2rem;
-      color: #334155;
-      text-decoration: none;
-      font-size: 0.95rem;
-    }
-    .nav-link:hover { background:#f1f5f9; }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>아기 성장 캘린더</title>
 
-    /* ==== main === */
-    main {
-      flex: 1;
-      padding: 2rem;
-      overflow-x: hidden;
-    }
-    section { margin-bottom: 3rem; }
-    section h2 { color: var(--primary); margin-top:0; }
-    ul.check {
-      list-style: none;
-      padding-left: 0;
-    }
-    ul.check li::before {
-      content: "✔";
-      margin-right: 6px;
-      color: var(--primary);
-    }
-    .calculator-box {
-      background:#fff;
-      border-radius:12px;
-      padding:2rem;
-      box-shadow:0 2px 6px rgba(0,0,0,0.05);
-      text-align:center;
-      max-width:420px;
-      margin:auto;
-    }
-    input#birthdate {
-      border:1px solid #cbd5e1;
-      border-radius:6px;
-      padding:0.5rem 0.75rem;
-      font-size:1rem;
-      width:200px;
-      margin-right:0.5rem;
-    }
-    button#calcBtn {
-      background:var(--primary);
-      color:#fff;
-      border:none;
-      border-radius:6px;
-      padding:0.55rem 1rem;
-      font-size:1rem;
-      cursor:pointer;
-    }
-    button#calcBtn:hover { background:#0d5e59; }
-    /* responsive */
-    @media(max-width:768px){
-      .sidebar{display:none;}
-      body{flex-direction:column;}
-    }
-  </style>
+  <!-- AdSense 코드 스니펫 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2903492342387009" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="style.css"/>
+  <!-- Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- FullCalendar -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
+
+  <style>
+    /* 이벤트 상세 모달 */
+    #eventModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);justify-content:center;align-items:center;z-index:1001}
+    #eventModal .modal-content{background:#fff;padding:1.5rem;border-radius:8px;max-width:90%;width:320px;box-shadow:0 4px 12px rgba(0,0,0,.2);position:relative}
+    #closeEventModal{position:absolute;top:.5rem;right:.5rem;font-size:1.2rem;cursor:pointer}
+
+    /* 광고 팝업 */
+    #ad-popup-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:none;justify-content:center;align-items:center;z-index:1000}
+    #ad-popup{position:relative;background:#fff;padding:1rem;border-radius:8px;max-width:90%;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+    #ad-popup-close{position:absolute;top:.5rem;right:.5rem;font-size:1.2rem;cursor:pointer}
+  </style>
 </head>
 <body>
-  <!-- ========= Sidebar ========= -->
-  <nav class="sidebar">
-    <div class="nav-section">
-      <h2>원더윅스</h2>
-      <a href="#wonder-what"   class="nav-link">원더윅스란?</a>
-      <a href="#usage"         class="nav-link">사용방법</a>
-      <a href="#pwa"           class="nav-link">앱처럼 사용하는 법</a>
-      <a href="#icon"          class="nav-link">홈 아이콘 넣는 법</a>
-      <a href="#reset"         class="nav-link">아기정보 초기화</a>
+  <!-- 상단 배너 -->
+  <header class="ad-banner">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2903492342387009" data-ad-slot="1171436236" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </header>
+
+  <div class="container result">
+    <h1>아기 성장 캘린더</h1>
+    <div class="input-group recalculator">
+      <input id="newBirthdate" placeholder="YYYY-MM-DD" readonly/>
+      <button id="recalcBtn">🔄 재계산</button>
+      <button id="homeBtn" class="home-btn">🏠 홈으로</button>
     </div>
-    <div class="nav-section">
-      <h2>개발자 다른 사이트</h2>
-      <a href="https://example.com/random-comment" class="nav-link" target="_blank">인스타 랜덤댓글</a>
-      <a href="https://example.com/searches"        class="nav-link" target="_blank">통합 검색 서비스</a>
-      <a href="https://example.com/217chat"         class="nav-link" target="_blank">217 CHAT</a>
-      <a href="https://instagram.com/yourid"        class="nav-link" target="_blank">개발자 인스타그램</a>
+    <p id="ageInfo"></p>
+    <p id="statusInfo" class="status"></p>
+    <p id="tipInfo" class="tip"></p>
+    <div id="calendars"></div>
+    <p id="nextEvent" class="next-event"></p>
+  </div>
+
+  <!-- 이벤트 상세 모달 -->
+  <div id="eventModal" class="modal">
+    <div class="modal-content">
+      <span id="closeEventModal" class="close">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <p id="modalStatus"></p>
+      <p id="modalTip"></p>
+      <p id="modalExample"></p>
     </div>
-  </nav>
+  </div>
 
-  <!-- ========= Main ========= -->
-  <main>
-    <!-- Calculator box -->
-    <div class="calculator-box" id="top">
-      <h1>아기 성장 캘린더 계산기</h1>
-      <p>아기 생년월일을 입력하면<br>원더윅스·예방접종·발달지점 전체 일정을<br>자동으로 계산해 달력으로 보여줍니다.</p>
-      <input id="birthdate" placeholder="YYYY-MM-DD" readonly />
-      <button id="calcBtn">계산하기</button>
+  <!-- 광고 팝업 -->
+  <div id="ad-popup-overlay">
+    <div id="ad-popup">
+      <span id="ad-popup-close">&times;</span>
+      <ins class="adsbygoogle" id="popupAd" style="display:block;width:300px;height:250px;text-align:center;" data-ad-client="ca-pub-2903492342387009" data-ad-slot="5775002015"></ins>
     </div>
+  </div>
 
-    <!-- Wonder Weeks intro -->
-    <section id="wonder-what">
-      <h2>원더윅스란?</h2>
-      <p>원더윅스(Wonder Weeks)는 아기가 지적·감각적 발달 단계마다 겪는 <strong>급격한 성장 스퍼트</strong>와 그에 따라 나타나는<br>민감기를 설명하는 이론입니다. 각 단계(Leap)마다 아기는 세상을 새로운 방식으로 인지하게 되며, 그 과정에서 낯설음·불안·보챔 등이 심해질 수 있지만 이후 <em>폭발적인 능력 발달</em>을 보여줍니다.</p>
-      <ul class="check">
-        <li>총 10단계(Leap 1~10)로 구분</li>
-        <li>단계별 평균 시작·종료 시점을 과학 연구로 제시</li>
-        <li>부모가 이해하면 수월하게 민감기를 넘어설 수 있음</li>
-      </ul>
-    </section>
+  <!-- 하단 배너 -->
+  <footer class="ad-banner">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2903492342387009" data-ad-slot="7893898897" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </footer>
 
-    <!-- Usage -->
-    <section id="usage">
-      <h2>사용방법</h2>
-      <ol>
-        <li>상단의 <strong>생년월일</strong> 입력 → <strong>계산하기</strong> 클릭</li>
-        <li>결과 화면에서 <strong>색상으로 구분된 달력</strong> 확인</li>
-        <li>원더윅스·예방접종·발달지점 이벤트를 클릭하면 상세 팁 팝업</li>
-      </ol>
-    </section>
-
-    <!-- PWA install -->
-    <section id="pwa">
-      <h2>앱처럼 사용하는 법(PWA)</h2>
-      <p>모바일 브라우저에서 <em>공유▶ 홈 화면에 추가</em>를 누르면 별도의 설치 없이 앱 아이콘처럼 실행됩니다.</p>
-    </section>
-
-    <!-- Icon -->
-    <section id="icon">
-      <h2>홈 아이콘 넣는 법</h2>
-      <p>아이폰 Safari 기준:</p>
-      <ul class="check">
-        <li>하단 공유 버튼 (⬆) 터치</li>
-        <li>‘홈 화면에 추가’ 선택</li>
-        <li>이름 입력 후 ‘추가’</li>
-      </ul>
-    </section>
-
-    <!-- Reset -->
-    <section id="reset">
-      <h2>아기 정보 초기화</h2>
-      <p>같은 기기에서 새 아기 정보를 계산하고 싶다면, 결과 화면 우측 상단 ‘아기 정보 초기화’ 버튼을 눌러주세요.</p>
-    </section>
-  </main>
-
+  <script src="script.js"></script>
   <script>
-    flatpickr("#birthdate", {
-      dateFormat: "Y-m-d",
-      allowInput: false,
-      prevArrow: "◀",
-      nextArrow: "▶"
+    window.addEventListener("load", () => {
+      // 팝업 10초 뒤 노출 & push 실행
+      setTimeout(() => {
+        document.getElementById("ad-popup-overlay").style.display = "flex";
+        try{ (adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){console.warn(e);}  
+      }, 10000);
+
+      document.getElementById("ad-popup-close").addEventListener("click", () => {
+        document.getElementById("ad-popup-overlay").style.display = "none";
+      });
+
+      const params = new URLSearchParams(location.search);
+      const b = params.get("b");
+      if (b) document.getElementById("newBirthdate").value = b;
+      const recalcBtn = document.getElementById("recalcBtn");
+      if (recalcBtn) recalcBtn.click();
     });
-    document.getElementById("calcBtn").addEventListener("click", () => {
-      const bd = document.getElementById("birthdate").value;
-      if (!bd) return alert("생년월일을 선택해주세요.");
-      location.href = `calendar.html?b=${bd}`;
+
+    // 모달 닫기
+    document.getElementById("closeEventModal").addEventListener("click", () => {
+      document.getElementById("eventModal").style.display = "none";
+    });
+    document.getElementById("eventModal").addEventListener("click", e => {
+      if (e.target.id === "eventModal") e.target.style.display = "none";
     });
   </script>
 </body>
