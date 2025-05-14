@@ -1,80 +1,77 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>아기 성장 캘린더</title>
 
   <!-- AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2903492342387009" crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.css"/>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
 
   <style>
-    /* 레이아웃 */
-    body{margin:0;display:flex;font-family:'Pretendard',sans-serif;background:#f3faf7}
-    .sidebar{width:220px;background:#fff;border-right:1px solid #e2e8f0;padding:1rem 0;position:sticky;top:0;height:100vh}
-    .sidebar h2{color:#0f766e;margin:0 1rem .5rem;font-size:1.05rem}
-    .sidebar a{display:block;padding:.45rem 1.1rem;color:#334155;text-decoration:none;font-size:.95rem}
+    /* ===== 레이아웃 ===== */
+    body {margin:0;display:flex;font-family:'Pretendard',sans-serif;background:#f3faf7}
+    .sidebar {width:220px;background:#fff;border-right:1px solid #e2e8f0;padding:1rem 0;position:sticky;top:0;height:100vh}
+    .sidebar h2 {margin:0 1rem 1rem;font-size:1.2rem;color:#0f766e}
+    .sidebar a {display:block;padding:.45rem 1.1rem;font-size:.95rem;color:#334155;text-decoration:none}
     .sidebar a:hover{background:#f1f5f9}
+    .main {flex:1;min-width:0;display:flex;flex-direction:column}
 
-    .main{flex:1;min-width:0;display:flex;flex-direction:column}
-    .result-wrap{display:flex;flex-direction:column;align-items:center;max-width:960px;margin:0 auto;padding:1rem}
+    .result-wrap {max-width:960px;margin:0 auto;padding:1rem;display:flex;flex-direction:column;align-items:center}
+    h1.title {margin:0 0 .5rem;color:#0f766e}
 
-    .input-group{margin-bottom:1rem}
-    .input-group input{border:1px solid #cbd5e1;border-radius:8px;padding:.55rem .8rem;font-size:1rem;width:180px;margin-right:.5rem}
-    .btn{background:#0f766e;color:#fff;border:none;border-radius:8px;padding:.55rem 1rem;font-size:1rem;cursor:pointer}
-    .btn.gray{background:#64748b}
-    .btn:hover{opacity:.9}
+    .input-group {margin-bottom:1rem}
+    .input-group input {width:180px;padding:.55rem .8rem;font-size:1rem;border:1px solid #cbd5e1;border-radius:8px;margin-right:.5rem}
+    .btn {padding:.55rem 1rem;font-size:1rem;border:none;border-radius:8px;cursor:pointer}
+    .btn.green{background:#0f766e;color:#fff}.btn.green:hover{opacity:.9}
+    .btn.gray {background:#64748b;color:#fff}.btn.gray:hover{opacity:.9}
 
     #calendars{width:100%}
     .month-calendar{margin-bottom:2rem}
 
-    /* 이벤트 상세 모달 */
+    /* ===== 모달 ===== */
     #eventModal,#infoModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1001;justify-content:center;align-items:center}
-    .modal-box{background:#fff;border-radius:8px;padding:1.5rem;width:320px;max-width:90%;position:relative}
-    .close{position:absolute;top:.5rem;right:.6rem;font-size:1.2rem;cursor:pointer}
+    .modal-box{background:#fff;padding:1.5rem;width:320px;max-width:90%;border-radius:8px;position:relative}
+    .close {position:absolute;top:.5rem;right:.6rem;font-size:1.2rem;cursor:pointer}
 
-    /* 광고 팝업 */
+    /* ===== 광고 팝업 ===== */
     #ad-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;justify-content:center;align-items:center}
     #ad-popup{background:#fff;border-radius:8px;padding:1rem;position:relative}
     #ad-popup-close{position:absolute;top:.4rem;right:.5rem;font-size:1.2rem;cursor:pointer}
 
-    @media(max-width:768px){.sidebar{display:none}}
+    @media (max-width:768px){.sidebar{display:none}}
   </style>
 </head>
 <body>
-  <!-- 사이드바 -->
+  <!-- ===== 사이드바 ===== -->
   <aside class="sidebar">
-    <h2>원더윅스</h2>
+    <h2>메뉴</h2>
     <a href="#" data-info="wonder">원더윅스란?</a>
-    <a href="#" data-info="guide">사용 방법</a>
+    <a href="#" data-info="guide" >사용 방법</a>
     <a href="#" data-info="install">앱처럼 설치</a>
   </aside>
 
-  <!-- 메인 -->
+  <!-- ===== 메인 ===== -->
   <div class="main">
     <!-- 상단 광고 -->
     <header class="ad-banner">
-      <ins class="adsbygoogle" style="display:block"
-           data-ad-client="ca-pub-2903492342387009"
-           data-ad-slot="1171436236" data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2903492342387009" data-ad-slot="1171436236" data-ad-format="auto" data-full-width-responsive="true"></ins>
       <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
     </header>
 
     <!-- 결과 -->
     <div class="result-wrap">
-      <h1 style="color:#0f766e">아기 성장 캘린더</h1>
-
+      <h1 class="title">아기 성장 캘린더</h1>
       <div class="input-group">
-        <input id="newBirth" placeholder="YYYY-MM-DD" readonly/>
-        <button id="recalc" class="btn">🔄 재계산</button>
-        <button id="home"   class="btn gray">🏠 홈</button>
+        <input id="newBirth" placeholder="YYYY-MM-DD" readonly />
+        <button id="recalc" class="btn green">🔄 재계산</button>
+        <button id="home"   class="btn gray" >🏠 홈</button>
       </div>
 
       <p id="ageInfo"></p>
@@ -86,23 +83,21 @@
 
     <!-- 하단 광고 -->
     <footer class="ad-banner">
-      <ins class="adsbygoogle" style="display:block"
-           data-ad-client="ca-pub-2903492342387009"
-           data-ad-slot="7893898897" data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2903492342387009" data-ad-slot="7893898897" data-ad-format="auto" data-full-width-responsive="true"></ins>
       <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
     </footer>
   </div>
 
-  <!-- 이벤트 상세 모달 -->
+  <!-- 이벤트 모달 -->
   <div id="eventModal"><div class="modal-box">
-    <span class="close" id="closeEvent">&times;</span>
-    <h2 id="mTitle"></h2><p id="mStatus"></p><p id="mTip"></p><p id="mExample"></p>
+    <span id="closeEvent" class="close">&times;</span>
+    <h2 id="mTitle"></h2>
+    <p id="mStatus"></p><p id="mTip"></p><p id="mExample"></p>
   </div></div>
 
-  <!-- 정보 모달 (사이드 메뉴) -->
+  <!-- 정보 모달 -->
   <div id="infoModal"><div class="modal-box">
-    <span class="close" id="closeInfo">&times;</span>
+    <span id="closeInfo" class="close">&times;</span>
     <h2 id="iTitle"></h2><p id="iBody"></p>
   </div></div>
 
@@ -110,42 +105,47 @@
   <div id="ad-overlay">
     <div id="ad-popup">
       <span id="ad-popup-close">&times;</span>
-      <ins class="adsbygoogle" style="display:block;width:300px;height:250px"
-           data-ad-client="ca-pub-2903492342387009"
-           data-ad-slot="5775002015"></ins>
+      <ins class="adsbygoogle" style="display:block;width:300px;height:250px" data-ad-client="ca-pub-2903492342387009" data-ad-slot="5775002015"></ins>
     </div>
   </div>
 
-  <!-- 스크립트 -->
+  <!-- 공통 JS -->
   <script src="script.js"></script>
 
   <script>
-    /* ---------- 광고 팝업 ---------- */
-    setTimeout(()=>{adOverlay.style.display='flex';
+    /* === 광고 팝업 === */
+    setTimeout(()=>{document.getElementById('ad-overlay').style.display='flex';
       try{(adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}},10000);
-    adPopupClose.onclick=()=>adOverlay.style.display='none';
+    document.getElementById('ad-popup-close').onclick=
+      ()=>document.getElementById('ad-overlay').style.display='none';
 
-    /* ---------- 정보 모달 ---------- */
+    /* === 사이드 메뉴 모달 === */
     const infoText={
-      wonder:'원더윅스(Wonder Weeks)는 아기가 급격한 지적·감각 발달을 겪으며 예민해지는 10단계(Leap)를 설명하는 육아 이론입니다.',
-      guide :'① 생년월일 입력 → 계산하기 클릭<br>② 달력에서 색상별 이벤트 확인<br>③ 이벤트 선택 시 상세 팁 팝업',
-      install:'모바일 크롬 > 공유 > 홈 화면에 추가 하면 앱 아이콘처럼 실행됩니다.'
+      wonder :'원더윅스는 아기가 급격한 발달을 겪는 10단계(Leap)를 설명하는 육아 이론입니다.',
+      guide  :'① 생년월일 입력 → 계산하기<br>② 달력에서 이벤트 확인<br>③ 터치하면 상세 팁 팝업',
+      install:'모바일 크롬 ▶ 공유 ▶ <em>홈 화면에 추가</em>를 누르면 아이콘이 생깁니다.'
     };
-    document.querySelectorAll('[data-info]').forEach(a=>{
-      a.onclick=e=>{
+    document.querySelectorAll('[data-info]').forEach(link=>{
+      link.addEventListener('click',e=>{
         e.preventDefault();
-        const k=a.dataset.info;
-        iTitle.textContent=a.textContent;
-        iBody.innerHTML=infoText[k]||'';
-        infoModal.style.display='flex';
-      };
+        const key=link.dataset.info;
+        document.getElementById('iTitle').textContent=link.textContent;
+        document.getElementById('iBody').innerHTML=infoText[key]||'';
+        document.getElementById('infoModal').style.display='flex';
+      });
     });
-    closeInfo.onclick=()=>infoModal.style.display='none';
-    infoModal.onclick=e=>{if(e.target.id==='infoModal')infoModal.style.display='none';};
+    document.getElementById('closeInfo').onclick=
+      ()=>document.getElementById('infoModal').style.display='none';
+    document.getElementById('infoModal').onclick=e=>{
+      if(e.target.id==='infoModal')e.target.style.display='none';
+    };
 
-    /* ---------- 이벤트 모달 닫기 ---------- */
-    closeEvent.onclick=()=>eventModal.style.display='none';
-    eventModal.onclick=e=>{if(e.target.id==='eventModal')eventModal.style.display='none';};
+    /* === 이벤트 모달 닫기 === */
+    document.getElementById('closeEvent').onclick=
+      ()=>document.getElementById('eventModal').style.display='none';
+    document.getElementById('eventModal').onclick=e=>{
+      if(e.target.id==='eventModal')e.target.style.display='none';
+    };
   </script>
 </body>
 </html>
