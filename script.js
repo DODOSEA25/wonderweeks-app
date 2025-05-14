@@ -1,186 +1,199 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(location.search);
-  let birthStr = params.get("b");
-  if (!birthStr) return location.href = "index.html";
+  /* ---------- 기본 파라미터 처리 ---------- */
+  const params   = new URLSearchParams(location.search);
+  let   birthStr = params.get("b");
+  if (!birthStr) return location.href = "index.html";   // 파라미터 없으면 홈으로
 
-  // Flatpickr 세팅 (재계산 입력)
-  flatpickr("#newBirthdate", {
-    dateFormat: "Y-m-d",
+  /* ---------- Flatpickr 세팅 ---------- */
+  flatpickr("#newBirth", {
+    dateFormat : "Y-m-d",
     defaultDate: birthStr,
-    prevArrow: "◀", 
-    nextArrow: "▶"
+    prevArrow  : "◀",
+    nextArrow  : "▶"
   });
 
-  document.getElementById("homeBtn")
-    .addEventListener("click", () => location.href = "index.html");
-  document.getElementById("recalcBtn")
-    .addEventListener("click", () => {
-      const v = document.getElementById("newBirthdate").value;
-      if (v) {
-        birthStr = v;
-        renderAll();
-      }
-    });
+  /* ---------- 버튼 네비 ---------- */
+  home.onclick   = () => location.href = "index.html";
+  recalc.onclick = () => {
+    const v = newBirth.value;
+    if (v) location.search = "?b=" + v;   // URL 파라미터만 갱신 → 1회 새로고침
+  };
 
   const today = new Date();
 
-  function renderAll() {
-    const birthDate = new Date(birthStr);
-    const diffDays = Math.floor((today - birthDate) / (1000*60*60*24));
-    const months   = Math.floor(diffDays / 30);
-    const weeks    = Math.floor((diffDays % 30) / 7);
-    document.getElementById("ageInfo").textContent =
-      `생후 ${months}개월 ${weeks}주차 (${diffDays}일)`;
+  /* ====================================================== */
+  /*                메인 계산 & 달력 그리기                */
+  /* ====================================================== */
+  function renderAll () {
 
+    /* 1) 나이 계산 */
+    const birthDate = new Date(birthStr);
+    const diffDays  = Math.floor((today - birthDate) / 864e5);     // ms → 일
+    const months    = Math.floor(diffDays / 30);
+    const weeks     = Math.floor((diffDays % 30) / 7);
+    ageInfo.textContent = `생후 ${months}개월 ${weeks}주차 (${diffDays}일)`;
+
+    /* 2) 데이터 불러오기 */
     fetch("events.json")
-      .then(res => res.json())
+      .then(r => r.json())
       .then(events => {
-        const wk = 1000*60*60*24*7;
-        const mo = 1000*60*60*24*30;
+
+        const WK = 864e5 * 7;    // 주
+        const MO = 864e5 * 30;   // 월 (대략)
+
+        /* -------------------------------------------------- */
+        /*   2-1) 원더·발달 단일 이벤트 계산                  */
+        /* -------------------------------------------------- */
         const singleEvents = [];
         events.forEach(ev => {
-          if (ev.type === "vaccination") return;
-          let st = new Date(birthDate), en = null;
+          if (ev.type === "vaccination") return;   // 접종은 뒤에서 처리
+
+          let st = new Date(birthDate);
+          let en = null;
+
           if (ev.week != null) {
-            st = new Date(birthDate.getTime() + ev.week * wk);
-            if (ev.durationWeeks) {
-              en = new Date(st.getTime() + ev.durationWeeks * wk);
-            }
+            st = new Date(birthDate.getTime() + ev.week * WK);
+            if (ev.durationWeeks)
+              en = new Date(st.getTime() + ev.durationWeeks * WK);
           } else if (ev.month != null) {
-            st = new Date(birthDate.getTime() + ev.month * mo);
+            st = new Date(birthDate.getTime() + ev.month * MO);
           }
+
           singleEvents.push({
-            title: ev.title,
-            start: st.toISOString().slice(0,10),
-            end:   en ? en.toISOString().slice(0,10) : undefined,
-            color: ev.color,
-            extendedProps: ev
+            title : ev.title,
+            start : st.toISOString().slice(0, 10),
+            end   : en ? en.toISOString().slice(0, 10) : undefined,
+            color : ev.color,
+            extendedProps : ev
           });
         });
 
+        /* -------------------------------------------------- */
+        /*   2-2) 예방접종 묶음 이벤트 계산                   */
+        /* -------------------------------------------------- */
         const vacMap = {};
         events.filter(e => e.type === "vaccination")
-          .forEach(ev => {
-            const st = new Date(birthDate.getTime() + ev.month * mo);
-            const d  = st.toISOString().slice(0,10);
-            vacMap[d] = vacMap[d] || [];
-            vacMap[d].push(ev);
-          });
-        const vacEvents = Object.entries(vacMap).map(([d,list]) => ({
-          title: `${list.length}건의 접종`,
-          start: d,
-          color: list[0].color,
-          extendedProps: { type: "vaccinationGroup", list }
+              .forEach(ev => {
+                const st = new Date(birthDate.getTime() + ev.month * MO);
+                const d  = st.toISOString().slice(0, 10);
+                (vacMap[d] = vacMap[d] || []).push(ev);
+              });
+
+        const vacEvents = Object.entries(vacMap).map(([d, list]) => ({
+          title : `${list.length}건의 접종`,
+          start : d,
+          color : list[0].color,
+          extendedProps : { type: "vaccinationGroup", list }
         }));
 
+        /* 전체 배열 */
         const allEvents = [...singleEvents, ...vacEvents];
 
-        // 오늘 이벤트 요약
-        const todayEv = allEvents.find(e => {
+        /* -------------------------------------------------- */
+        /*   3) 오늘 이벤트 요약                             */
+        /* -------------------------------------------------- */
+        const todayEvent = allEvents.find(e => {
           const s = new Date(e.start);
-          const en= e.end ? new Date(e.end) : s;
+          const en = e.end ? new Date(e.end) : s;
           return today >= s && today <= en;
         });
-        if (todayEv) {
-          const ev = todayEv.extendedProps;
-          let prefix, status, tip;
-          if (ev.type === "wonder") {
-            prefix = `원더윅스 ${ev.stage}단계`;
-            status = ev.description.status;
-            tip    = ev.description.tip;
-          } else if (ev.type === "development") {
-            prefix = `발달지점`;
-            status = ev.description.status;
-            tip    = ev.description.tip;
+
+        if (todayEvent) {
+          const x = todayEvent.extendedProps;
+          let pre, st, tp;
+
+          if (x.type === "wonder") {
+            pre = `원더윅스 ${x.stage}단계`;
+            st  = x.description.status;
+            tp  = x.description.tip;
+          } else if (x.type === "development") {
+            pre = "발달지점";
+            st  = x.description.status;
+            tp  = x.description.tip;
           } else {
-            prefix = `예방접종 (${ev.list.length}차)`;
-            status = "여러 접종 일정이 있습니다.";
-            tip    = "팝업에서 세부 접종 항목을 확인하세요.";
+            pre = `예방접종 (${x.list.length}차)`;
+            st  = "여러 접종 일정이 있습니다.";
+            tp  = "팝업에서 세부 항목을 확인하세요.";
           }
-          document.getElementById("statusInfo").textContent =
-            `지금 ${prefix}: ${status}`;
-          document.getElementById("tipInfo").textContent =
-            `이렇게 하면 좋아요: ${tip}`;
+
+          statusInfo.textContent = `지금 ${pre}: ${st}`;
+          tipInfo.textContent    = `이렇게 하면 좋아요: ${tp}`;
         } else {
-          document.getElementById("statusInfo").textContent =
-            "오늘은 특별한 이벤트가 없습니다.";
-          document.getElementById("tipInfo").textContent = "";
+          statusInfo.textContent = "오늘은 특별한 이벤트가 없습니다.";
+          tipInfo.textContent    = "";
         }
 
-        // 달력 6개월 렌더
-        const calRoot = document.getElementById("calendars");
-        calRoot.innerHTML = "";
-        for (let offset = -1; offset <= 4; offset++) {
+        /* -------------------------------------------------- */
+        /*   4) 칼렌더 6개월 렌더                             */
+        /* -------------------------------------------------- */
+        calendars.innerHTML = "";
+        for (let off = -1; off <= 4; off++) {
           const div = document.createElement("div");
           div.className = "month-calendar";
-          calRoot.append(div);
+          calendars.append(div);
 
-          const md = new Date(today.getFullYear(), today.getMonth() + offset, 1);
+          const md = new Date(today.getFullYear(),
+                              today.getMonth() + off, 1);
+
           new FullCalendar.Calendar(div, {
-            initialView: "dayGridMonth",
-            initialDate: md.toISOString().slice(0,10),
-            locale: "ko",
-            headerToolbar: { left:"", center:"title", right:"" },
-            height: "auto",
-            events: allEvents,
-            eventContent: info => {
-              const e = info.event.extendedProps;
+            initialView  : "dayGridMonth",
+            initialDate  : md.toISOString().slice(0, 10),
+            locale       : "ko",
+            headerToolbar: { left: "", center: "title", right: "" },
+            height       : "auto",
+            events       : allEvents,
+
+            eventContent : ({ event }) => {
+              const e = event.extendedProps;
               let label = "";
-              if (e.type === "wonder") {
-                label = `원더윅스 ${e.stage}단계`;
-              } else if (e.type === "development") {
-                label = `발달지점`;
-              } else if (e.type === "vaccinationGroup") {
-                label = `예방접종 (${e.list.length}차)`;
-              }
-              return { html: `<div class="fc-event-label">${label}</div>` };
+              if (e.type === "wonder")
+                   label = `원더윅스 ${e.stage}단계`;
+              else if (e.type === "development")
+                   label = "발달지점";
+              else if (e.type === "vaccinationGroup")
+                   label = `예방접종 (${e.list.length}차)`;
+              return { html: `<div class='fc-event-label'>${label}</div>` };
             },
-            eventClick: info => {
-              const e = info.event.extendedProps;
-              let title, status, tip = "", example = "";
+
+            eventClick : ({ event }) => {
+              const e = event.extendedProps;
+              let t, s, tp = "", ex = "";
+
               if (e.type === "vaccinationGroup") {
-                title  = `💉 ${e.list.length}건의 예방접종`;
-                status = e.list.map(x => x.title).join("\n");
+                t = `💉 ${e.list.length}건의 예방접종`;
+                s = e.list.map(x => x.title).join("\\n");
               } else {
-                title   = info.event.title;
-                status  = e.description.status;
-                tip     = e.description.tip;
-                example = e.description.example;
+                t  = event.title;
+                s  = e.description.status;
+                tp = e.description.tip;
+                ex = e.description.example;
               }
-              document.getElementById("modalTitle").textContent   = title;
-              document.getElementById("modalStatus").textContent  = status;
-              document.getElementById("modalTip").textContent     = tip;
-              document.getElementById("modalExample").textContent = example;
-              document.getElementById("eventModal").style.display = "flex";
+
+              mTitle.textContent   = t;
+              mStatus.textContent  = s;
+              mTip.textContent     = tp;
+              mExample.textContent = ex;
+
+              eventModal.style.display = "flex";
             }
           }).render();
         }
 
-        // nextEvent
+        /* -------------------------------------------------- */
+        /*   5) 다음 이벤트 안내                             */
+        /* -------------------------------------------------- */
         const upcoming = allEvents
           .filter(e => new Date(e.start) > today)
-          .sort((a,b) => new Date(a.start) - new Date(b.start));
-        const wonderEnds = allEvents
-          .filter(e => e.extendedProps.type === "wonder")
-          .map(e => ({ ev: e, endDate: e.end ? new Date(e.end) : new Date(e.start) }));
-        const lastWonder = wonderEnds.reduce((acc,cur) =>
-          cur.endDate > acc.endDate ? cur : acc
-        ,{ ev:null,endDate:new Date(0) });
+          .sort((a, b) => new Date(a.start) - new Date(b.start));
 
         let summary = "";
-        if (upcoming[0]) {
-          summary += `다음 ▶ ${upcoming[0].title} (${upcoming[0].start})`;
-        }
-        if (lastWonder.ev) {
-          const stg = lastWonder.ev.extendedProps.stage;
-          const ed  = lastWonder.endDate.toISOString().slice(0,10);
-          summary += (summary ? " | " : "") +
-                     `마지막 ▶ 원더윅스 ${stg}단계 종료 (${ed})`;
-        }
-        document.getElementById("nextEvent").textContent = summary;
+        if (upcoming[0])
+          summary = `다음 ▶ ${upcoming[0].title} (${upcoming[0].start})`;
+        nextEvent.textContent = summary;
       });
   }
 
-  // 초기 렌더
+  /* 최초 실행 */
   renderAll();
+  window.renderAll = renderAll;   // 외부(버튼)에서 호출 가능
 });
