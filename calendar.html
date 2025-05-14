@@ -23,64 +23,23 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
 
   <style>
-    /* 이벤트 상세 모달 오버레이 */
-    #eventModal {
-      display: none;               /* 숨김 */
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      justify-content: center;     /* modal-content 중앙 정렬 */
-      align-items: center;
-      z-index: 1001;               /* 광고 팝업(z=1000) 위 */
-    }
-    /* 모달 컨텐츠 박스 */
-    #eventModal .modal-content {
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: 8px;
-      max-width: 90%;
-      width: 320px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      position: relative;
-    }
-    /* 닫기 버튼 */
-    #closeEventModal {
-      position: absolute;
-      top: 0.5rem; right: 0.5rem;
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
+    /* 이벤트 상세 모달 */
+    #eventModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,.5);justify-content:center;align-items:center;z-index:1001}
+    #eventModal .modal-content{background:#fff;padding:1.5rem;border-radius:8px;
+      max-width:90%;width:320px;box-shadow:0 4px 12px rgba(0,0,0,.2);position:relative}
+    #closeEventModal{position:absolute;top:.5rem;right:.5rem;font-size:1.2rem;cursor:pointer}
 
-    /* 팝업 광고용 CSS */
-    #ad-popup-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    #ad-popup {
-      position: relative;
-      background: #fff;
-      padding: 1rem;
-      border-radius: 8px;
-      max-width: 90%;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    }
-    #ad-popup-close {
-      position: absolute;
-      top: 0.5rem; right: 0.5rem;
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
+    /* 광고 팝업 */
+    #ad-popup-overlay{position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,.5);display:none;justify-content:center;align-items:center;z-index:1000}
+    #ad-popup{position:relative;background:#fff;padding:1rem;border-radius:8px;
+      max-width:90%;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+    #ad-popup-close{position:absolute;top:.5rem;right:.5rem;font-size:1.2rem;cursor:pointer}
   </style>
 </head>
 <body>
-  <!-- 상단 배너 광고 -->
+  <!-- 상단 배너 -->
   <header class="ad-banner">
     <ins class="adsbygoogle"
          style="display:block"
@@ -108,7 +67,7 @@
     <p id="nextEvent" class="next-event"></p>
   </div>
 
-  <!-- 이벤트 상세 팝업 모달 -->
+  <!-- 이벤트 상세 모달 -->
   <div id="eventModal" class="modal">
     <div class="modal-content">
       <span id="closeEventModal" class="close">&times;</span>
@@ -119,21 +78,22 @@
     </div>
   </div>
 
-  <!-- 팝업 광고 오버레이 -->
+  <!-- 광고 팝업 -->
   <div id="ad-popup-overlay">
     <div id="ad-popup">
       <span id="ad-popup-close">&times;</span>
       <ins class="adsbygoogle"
-           style="display:block; text-align:center;"
+           id="popupAd"
+           style="display:block;text-align:center;"
            data-ad-client="ca-pub-2903492342387009"
            data-ad-slot="5775002015"
            data-ad-format="auto"
            data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <!-- ※ push() 스크립트는 여기서 제거 -->
     </div>
   </div>
 
-  <!-- 하단 배너 광고 -->
+  <!-- 하단 배너 -->
   <footer class="ad-banner">
     <ins class="adsbygoogle"
          style="display:block"
@@ -144,36 +104,39 @@
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </footer>
 
-  <!-- FullCalendar & 앱 로직 -->
+  <!-- 앱 로직 -->
   <script src="script.js"></script>
 
   <script>
     window.addEventListener("load", () => {
-      // 1) 광고 팝업 10초 후 노출
+      /* 10초 후 광고 팝업 노출 & 그때 push() 실행 */
       setTimeout(() => {
         document.getElementById("ad-popup-overlay").style.display = "flex";
+        try {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch(e){ console.warn(e); }
       }, 10000);
+
       document.getElementById("ad-popup-close")
               .addEventListener("click", () => {
         document.getElementById("ad-popup-overlay").style.display = "none";
       });
 
-      // 2) URL 파라미터로 날짜 입력값 세팅
+      /* URL 파라미터로 날짜 세팅 */
       const params = new URLSearchParams(location.search);
       const b = params.get("b");
       if (b) document.getElementById("newBirthdate").value = b;
 
-      // 3) 자동 재계산 트리거
+      /* 자동 재계산 */
       const recalcBtn = document.getElementById("recalcBtn");
       if (recalcBtn) recalcBtn.click();
     });
 
-    // 이벤트 상세 모달 닫기
+    /* 상세 모달 닫기 */
     document.getElementById("closeEventModal")
       .addEventListener("click", () => {
         document.getElementById("eventModal").style.display = "none";
       });
-    // 모달 외곽 클릭 시에도 닫기
     document.getElementById("eventModal")
       .addEventListener("click", e => {
         if (e.target.id === "eventModal")
